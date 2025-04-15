@@ -1,8 +1,9 @@
+version: '3.8'
 
 services:
   pgdatabase:
     image: postgres:13
-    container_name: zoomcamp_container  # Usa el nombre de tu contenedor existente
+    container_name: postgres
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
@@ -11,6 +12,7 @@ services:
       - "/workspaces/Zoomcamp2025/week_1_setup/2_docker_sql/ny_taxi_postgres_data:/var/lib/postgresql/data"
     ports:
       - "5432:5432"
+
   pgadmin:
     image: dpage/pgadmin4
     environment:
@@ -18,3 +20,14 @@ services:
       - PGADMIN_DEFAULT_PASSWORD=root
     ports:
       - "8080:80"
+
+  pgcli:
+    build:
+      context: .
+      dockerfile: Dockerfile.pgcli
+    depends_on:
+      - pgdatabase
+    environment:
+      - PGPASSWORD=root
+    command: tail -f /dev/null
+    network_mode: "service:pgdatabase"
