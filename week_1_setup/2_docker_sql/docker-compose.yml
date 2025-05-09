@@ -1,9 +1,10 @@
-version: '3.8'
+networks:
+  pg-network:
 
 services:
   pgdatabase:
     image: postgres:13
-    container_name: postgres
+    container_name: pg-database
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
@@ -12,14 +13,19 @@ services:
       - "/workspaces/Zoomcamp2025/week_1_setup/2_docker_sql/ny_taxi_postgres_data:/var/lib/postgresql/data"
     ports:
       - "5432:5432"
+    networks:
+      - pg-network
 
   pgadmin:
     image: dpage/pgadmin4
+    container_name: pgadmin
     environment:
       - PGADMIN_DEFAULT_EMAIL=admin@admin.com
       - PGADMIN_DEFAULT_PASSWORD=root
     ports:
       - "8080:80"
+    networks:
+      - pg-network
 
   pgcli:
     build:
@@ -30,4 +36,5 @@ services:
     environment:
       - PGPASSWORD=root
     command: tail -f /dev/null
-    network_mode: "service:pgdatabase"
+    networks:
+      - pg-network
