@@ -10,7 +10,7 @@ services:
       - POSTGRES_PASSWORD=root
       - POSTGRES_DB=ny_taxi
     volumes:
-      - "/workspaces/Zoomcamp2025/week_1_setup/2_docker_sql/ny_taxi_postgres_data:/var/lib/postgresql/data"
+      - "/workspaces/Zoomcamp2025/week_1_setup/2_docker_sql/ny_taxi_postgres_data:/var/lib/postgresql/data:rw"
     ports:
       - "5432:5432"
     networks:
